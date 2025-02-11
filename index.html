@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloomying</title>
+    <!-- 添加更艺术的字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant:wght@300;400;500&family=Italiana&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            font-family: 'Italiana', serif;
+            overflow: hidden;
+        }
+
+        /* 创建一个容器包裹所有内容 */
+        .content-wrapper {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+        }
+
+        .enter-button {
+            font-size: 1.2rem;
+            color: #000;
+            text-decoration: none;
+            display: block;
+            margin-top: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        .enter-button:hover {
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+        
+        .title-container {
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .title-container:hover {
+            opacity: 1;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 300;
+            margin: 0;
+            line-height: 1.2;
+            letter-spacing: 0.05em;
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            margin-top: 1.5rem;
+            font-weight: 300;
+            color: #000;
+            opacity: 1;
+            font-family: 'Cormorant', serif;
+            font-style: italic;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* 给标题添加精致的渐变效果 */
+        .title-container h1 {
+            color: #000;
+            font-weight: 500;
+            text-shadow: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particleCanvas"></canvas>
+    <video autoplay muted loop playsinline controls>
+        <source src="assets/landing-video.mp4" type="video/mp4" />
+        您的浏览器不支持 MP4 视频
+    </video>
+    
+    <div class="content-wrapper">
+        <div class="title-container">
+            <a href="main.html">
+                <h1>
+                    Bloomying
+                    <div class="subtitle">Art Exhibition</div>
+                </h1>
+            </a>
+        </div>
+        <a href="main.html" class="enter-button">Enter ⟶</a>
+    </div>
+
+    <script>
+        const video = document.querySelector('video');
+        
+        // 视频加载成功
+        video.addEventListener('loadeddata', () => {
+            // 视频加载成功后的逻辑
+        });
+        
+        // 视频加载失败
+        video.addEventListener('error', (e) => {
+            const errorTypes = {
+                1: "MEDIA_ERR_ABORTED - 加载被中止",
+                2: "MEDIA_ERR_NETWORK - 网络错误",
+                3: "MEDIA_ERR_DECODE - 解码错误",
+                4: "MEDIA_ERR_SRC_NOT_SUPPORTED - 视频格式不支持"
+            };
+            
+            if (video.error) {
+                // 处理视频加载失败的情况
+            }
+        });
+
+        // 检查浏览器支持情况
+        const videoTest = document.createElement('video');
+        // 检查浏览器是否支持 MP4
+        
+        // 检查文件
+        fetch('assets/landing-video.mp4')
+            .then(async response => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const blob = await response.blob();
+                // 检查文件类型和大小
+                
+                // 检查文件头
+            })
+            .catch(error => {
+                // 处理文件检查错误
+            });
+    </script>
+</body>
+</html> 

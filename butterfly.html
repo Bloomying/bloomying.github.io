@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misty Butterfly Dreams</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;500;700&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-color: #E8DFD8;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-color) 100%);
+            min-height: 100vh;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .article-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: 0.08em;
+        }
+
+        .article-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: #666;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .main-image {
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem auto;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .poem {
+            max-width: 500px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: rgba(255,255,255,0.8);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .poem-cn {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .poem-en {
+            color: #666;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.03em;
+            line-height: 1.8;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 2rem;
+            font-style: italic;
+            color: #666;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.05em;
+        }
+
+        .back-link:hover {
+            color: #333;
+        }
+
+        /* 添加流体背景效果 */
+        .fluid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-color) 100%);
+            opacity: 0.8;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .fluid-background::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgogIDxmaWx0ZXIgaWQ9Im5vaXNlIj4KICAgIDxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjAyIiBudW1PY3RhdmVzPSI1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+CiAgPC9maWx0ZXI+CiAgPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI25vaXNlKSIgb3BhY2l0eT0iMC4wNSIvPgo8L3N2Zz4=');
+            animation: fluid 15s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes fluid {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-20%, -20%) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="fluid-background"></div>
+    <article>
+        <div class="article-header">
+            <h1 class="article-title">氤氲蝴蝶梦</h1>
+            <h2 class="article-subtitle">Misty Butterfly Dreams</h2>
+        </div>
+
+        <img src="assets/craft/craft_18.jpg" alt="Butterfly Ring" class="main-image">
+
+        <div class="poem">
+            <div class="poem-cn">
+                分不清<br>
+                是梦境还是记忆<br>
+                夏日花园里<br>
+                蝴蝶悠然小憩<br>
+                缤纷依旧<br>
+                好似昨日虹霓
+            </div>
+
+            <div class="poem-en">
+                Hard to tell<br>
+                Between dreams and memories<br>
+                In summer garden<br>
+                Butterflies rest at ease<br>
+                Colors remain<br>
+                Like yesterday's rainbow gleam
+            </div>
+
+            <div class="signature">
+                戒指&诗歌 by 期待夏天的我<br>
+                Ring & Poetry by Me, Yearning for Summer
+            </div>
+        </div>
+
+        <a href="main.html" class="back-link">← Back to Gallery</a>
+    </article>
+</body>
+</html> 

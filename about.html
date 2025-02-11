@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Bloomying</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant:wght@300;400;500&family=Italiana&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #fff 0%, #fff8f8 100%);
+            line-height: 1.8;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 918px;  /* 1020 * 0.9 */
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            color: #000;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+
+        .section-content {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content p {
+            margin: 0 0 1.2rem 0;
+            text-align: justify;
+        }
+
+        .featured-work {
+            margin: 2rem 0;
+            padding-left: 1rem;
+            border-left: 3px solid rgba(0,0,0,0.1);
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .work-media {
+            flex: 0 0 60%;
+        }
+
+        .work-media img,
+        .work-media video {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .work-info {
+            flex: 0 0 40%;
+        }
+
+        .music-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 2rem;
+            min-height: 400px;  /* 确保卡片有足够高度显示歌词 */
+        }
+
+        .music-player {
+            flex: 0 0 50%;
+        }
+
+        .music-cover {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .music-cover img {
+            width: 100%;
+            border-radius: 4px;
+        }
+
+        .play-btn {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .song-title {
+            font-size: 1.1rem;
+            margin: 0 0 0.3rem 0;
+        }
+
+        .artist {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .progress-container {
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 2px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: #666;
+            border-radius: 2px;
+            width: 0;
+        }
+
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        .lyrics-content {
+            flex: 0 0 50%;
+            white-space: pre-line;
+            line-height: 1.8;
+            font-size: 0.765rem;  /* 0.85 * 0.9 */
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 1rem;
+            color: #666;
+            scrollbar-width: thin;  /* Firefox */
+            scrollbar-color: rgba(0,0,0,0.2) transparent;  /* Firefox */
+        }
+
+        /* Webkit 滚动条样式 */
+        .lyrics-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .lyrics-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .lyrics-content::-webkit-scrollbar-thumb {
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 3px;
+        }
+
+        .work-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            color: #000;
+            margin-bottom: 0.5rem;
+        }
+
+        .work-description {
+            font-size: 0.85rem;
+            color: #666;
+            margin-left: 1rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-family: 'Noto Serif SC', serif;
+            letter-spacing: 0.05em;
+            font-size: 0.85rem;
+        }
+
+        .back-link:hover {
+            color: #333;
+        }
+
+        .service-item {
+            font-size: 0.85rem;
+            margin: 1.2rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .service-item::before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            color: #666;
+        }
+
+        .vision-item {
+            font-size: 0.85rem;
+            margin: 1.2rem 0;
+            padding-left: 2rem;
+            line-height: 1.6;
+        }
+
+        .vision-intro {
+            font-size: 0.85rem;
+            margin: 1.2rem 0;
+            padding-left: 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Introduction -->
+        <section class="section">
+            <h2 class="section-title">Introduction</h2>
+            <div class="section-content">
+                <p>Welcome to my art exhibition "Bloomying", a play on my name, Ying. I love the coincidence of the pronunciation of my name with "ing", so I coined "Bloomying" as the name of this exhibition to convey "Ying is blooming" doing art.</p>
+                
+                <p>I come from a math and statistics background, worked as an image algorithm engineer and deep learning practitioner, and now I explore the beautiful intersection of art and technology - where mathematical precision meets artistic intuition, where code dances with creativity.</p>
+            </div>
+        </section>
+
+        <!-- The Journey & Philosophy -->
+        <section class="section">
+            <h2 class="section-title">The Journey & Philosophy</h2>
+            <div class="section-content">
+                <p>Two years ago, when I decided to become an artist, I hadn't painted for a long time and rarely experienced the flow state of creation. I couldn't imagine what I would create — all I had was the faith and determination for my artist dream.</p>
+                
+                <p>Now, I have a whole website filled with diverse works across various mediums, from delicate heat shrink crafts to code-generated patterns, from traditional Chinese brush paintings to iPad digital illustrations, from AI fashion designs to interactive experiences, from captured moments in photography to experimental video art.</p>
+                
+                <p>You can explore them by themes (including "Blooming with Pride", "My Vigor. My Heartbeat.", and "My Fantasy. My Dreamland.") or by mediums (including digital paintings, photography, code-based art, crafts, traditional Chinese brush painting, AI art, video art, music, and writing).</p>
+                
+                <p>I am amazed by how creativity unfolds when we dare to follow our inner calling. This journey validates my philosophy: when we believe in the existence of a beautiful world, it comes into being. Through this belief, I've truly transformed my dream into reality.</p>
+
+                <p>Through countless hours creating visual arts, crafts, music, and numerous experiments across different mediums, I have found passion and vitality in life. Whether solving mathematical problems, developing innovative algorithms for technical challenges, or making art - to me, they're all like engaging puzzle games. Perhaps life's most important puzzle is ourselves, and our most essential task is to understand and continually refine who we are. In my life, technology and art are not opposing forces; rather, they are complementary languages that decode the greatest mystery of life: ourselves.</p>
+
+                <p>Perhaps the most profound artwork we can create is our own life - having the courage to recognize and nurture our gifts, to follow our inner calling, and to find joy in authentic self-expression. Through my creative practice, I hope to inspire others to embark on their own journey of self-discovery and creation.</p>
+            </div>
+        </section>
+
+        <!-- Featured Works -->
+        <section class="section">
+            <h2 class="section-title">Featured Works</h2>
+            <div class="featured-work">
+                <div class="work-media">
+                    <video src="assets/generative/fountain.mp4" controls playsinline></video>
+                </div>
+                <div class="work-info">
+                    <h3 class="work-title">Fountain</h3>
+                    <p class="work-description">"Fountain" is an interactive generative art piece where you can create filled circles of random colors by hovering the mouse. The size of each circle depends on the duration of the mouse hover.</p>
+                    <p class="work-description">With a single click, these simple circles transform into complex and beautiful fluid flows, creating an enchanting fountain-like effect that demonstrates how simple elements can evolve into intricate patterns through computational art.</p>
+                </div>
+            </div>
+            <div class="featured-work">
+                <div class="work-media">
+                    <img src="assets/blooming/3.jpg" alt="Pink Flowers in Rain">
+                </div>
+                <div class="work-info">
+                    <h3 class="work-title">Pink Flowers</h3>
+                    <p class="work-description">A serendipitous capture on my way home, a surprise gift from randomness. Walking in a light drizzle after watching a movie, singing along to "Tian Hei Hei" with an empty soda bottle as percussion, I captured this slightly blurry yet beautifully imperfect moment of pink flowers by the path. Despite multiple attempts later, I could never recreate this shot - perhaps a testament to the unique beauty of spontaneous moments.</p>
+                    <p class="work-description"><a href="story.html" style="color: #666; text-decoration: underline;">Read the full story</a> about this magical evening and the story behind this photograph.</p>
+                </div>
+            </div>
+            <div class="featured-work">
+                <div class="work-media">
+                    <img src="assets/vigor/illuminated.jpg" alt="Illuminated Digital Painting">
+                </div>
+                <div class="work-info">
+                    <h3 class="work-title">Illuminated</h3>
+                    <p class="work-description">"Illuminated" is my first iPad painting and marks the beginning of my artistic journey. I remember that night - feeling a bit down, I picked up my iPad and started making random strokes. Gradually, I found myself completely immersed in the creative process, as the world around me seemed to fade into peaceful silence. Hours passed unnoticed until nearly 2 AM, when exhaustion finally pulled me away from the screen. This simple act of creation, lasting just a few hours, filled me with an energy that radiated through the following days.</p>
+                    <p class="work-description">The piece captures an interplay of light and shadow, as if illuminating darkness itself - a reflection of my own state that night, finding light within shadows. The title "Illuminated" carries dual meaning: both the visual effect of light breaking through darkness in the painting, and the moment my life itself was illuminated by rediscovering art.</p>
+                    <p class="work-description">This piece represents more than just a painting; it's the spark that ignited my artistic path. From this moment on, I felt my life being lit up with new purpose and possibility.</p>
+                </div>
+            </div>
+            <div class="featured-work">
+                <div class="work-media">
+                    <video src="assets/landing-video.mp4" controls playsinline></video>
+                </div>
+                <div class="work-info">
+                    <h3 class="work-title">Ripples of the Sun (太阳的涟漪)</h3>
+                    <p class="work-description">An AI-generated fluid animation that captures the ethereal dance of light and motion. Like ripples on a cosmic pond, the warm golden hues flow and merge in an endless cycle of transformation, reminiscent of the sun's reflection on gentle waters.</p>
+                    <p class="work-description">This piece serves as the landing page video, welcoming visitors with its mesmerizing fluidity. It symbolizes how creativity, like sunlight, creates ripples that spread outward, touching and transforming everything in their path. Just as the sun's warmth nurtures life, art has the power to illuminate, inspire, and bring warmth to the human experience.</p>
+                </div>
+            </div>
+            <div class="featured-work">
+                <div class="work-media">
+                    <img src="assets/craft/craft_9.jpg" alt="Freedom Craft">
+                </div>
+                <div class="work-info">
+                    <h3 class="work-title">Freedom</h3>
+                    <p class="work-description">An original earring design expressing personal liberation</p>
+                    <p class="work-description">Like a bird soaring towards its mountain, this earring design embodies the spirit of personal liberation. Inspired by the metaphor of flight and the journey towards self-discovery, it represents that moment when we spread our wings and dare to pursue our authentic path. Just as birds naturally seek their heights, this piece celebrates our innate desire to rise above limitations and fly towards our own mountains - our deepest aspirations and truest selves.</p>
+                </div>
+            </div>
+            <div class="featured-work">
+                <div class="work-media">
+                    <div class="music-card">
+                        <div class="music-player">
+                            <div class="music-cover">
+                                <img src="assets/music/covers/artist.jpg" alt="Artist">
+                                <button class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            </div>
+                            <div class="music-info">
+                                <h3 class="song-title">Artist</h3>
+                                <p class="artist">Bloomying</p>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar">
+                                    <div class="progress"></div>
+                                </div>
+                                <div class="time-info">
+                                    <span class="current-time">0:00</span>
+                                    <span class="duration">3:25</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lyrics-content">
+                            A heart that feels too deep to hide
+                            A spirit too wild to confine
+                            Paper cranes and childhood dreams
+                            Of colors flowing endlessly
+                            Every sketch beneath my bed
+                            Every song inside my head
+                            Wasn't just a passing phase
+                            But my soul trying to say
+                            
+                            Tried to fit into their world
+                            Oh, how many times I failed
+                            Till I learned this simple truth:
+                            Some hearts can't be contained
+                            
+                            Now I know with open eyes
+                            I was born with colors in my soul
+                            And melodies that had to flow
+                            Art's not what I chose to do
+                            It's the air I breathe, it's true
+                            Though I learned this truth so late
+                            Every detour had its place
+                            Now I understand at last
+                            Why my heart beats this way
+                            
+                            They say I feel too much, too deep
+                            But that's what makes my art sing
+                            Success they said would set me free
+                            But chains of gold still felt like chains
+                            The path they chose felt like a cage
+                            Though lined with golden praise
+                            But art kept calling through the years
+                            Like sunlight through the haze
+                            
+                            No more loving from afar
+                            Other artists' distant stars
+                            Time to turn that love within
+                            Let my own light begin
+                            Through the darkness and through the light
+                            I've got worlds left to create
+                            With melancholy and with joy
+                            This is who I'm meant to be
+                            An artist, finally me
+                            
+                            Every color, every line
+                            Tells the story that is mine
+                            Like a river finding sea
+                            I'm becoming who I'm meant to be
+                            Watch me paint across the sky
+                            With colors only I define
+                            This is where I'm meant to be
+                            An artist, wild and free
+                        </div>
+                        <audio src="assets/music/tracks/artist.mp3" preload="metadata"></audio>
+                    </div>
+                </div>
+                <div class="work-info">
+                    <h3 class="work-title">Artist</h3>
+                    <p class="work-description">A collaborative creation exploring my artistic journey - lyrics co-written with Claude based on my creative vision, and music composed with Suno AI through carefully crafted prompts to achieve the desired emotional atmosphere.</p>
+                    <p class="work-description">The song narrates my path of artistic self-discovery, from early hesitation to eventual embrace of my creative identity. Through this human-AI collaboration, I was able to articulate my journey in both words and melody, creating a piece that authentically captures the transformative experience of becoming an artist.</p>
+                </div>
+            </div>
+            <div class="featured-work">
+                <div class="work-media">
+                    <video src="assets/blog/output_compressed.mp4" controls playsinline></video>
+                </div>
+                <div class="work-info">
+                    <h3 class="work-title">Reflections on Creativity and Self-Discovery</h3>
+                    <p class="work-description">A heartfelt podcast episode where I collaborated with NotebookLM to transform my past blog posts into an intimate dialogue. Through this AI-human collaboration, my written reflections on creative practices, personal growth, and artistic awakening take on new life as spoken conversation, offering both practical insights and inspiration for anyone exploring their creative path.</p>
+                </div>
+            </div>
+            <div class="featured-work">
+                <div class="work-media">
+                    <img src="assets/patterns.png" alt="Pattern Play with Colors">
+                </div>
+                <div class="work-info">
+                    <h3 class="work-title">Pattern Play with Colors</h3>
+                    <p class="work-description">A mesmerizing collection of patterns generated through recursive algorithms, where code becomes a brush to paint intricate designs. Each pattern emerges from mathematical precision yet carries an air of mystique, as if revealing the hidden geometry of dreams.</p>
+                    <p class="work-description">These designs reflect my love for playing with colors to create vibrant, enchanting worlds. The delicate complexity and harmonious color combinations make these patterns perfect for decorative applications - from luxurious carpets to elegant textile designs, each pattern tells a story of where technology meets artistry to create something truly magical.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services & Collaborations -->
+        <section class="section">
+            <h2 class="section-title">Services & Collaborations</h2>
+            <div class="section-content">
+                <p>I am dedicated to seamlessly integrating art and technology, offering a range of creative services:</p>
+
+                <div class="service-item">
+                    Artistic & Cross-Disciplinary Collaborations: Whether it's AI art, digital fashion, or immersive experiences, I am excited to join creative projects that push boundaries and explore new possibilities
+                </div>
+
+                <div class="service-item">
+                    Inspiration & Tech Sharing: Through blogging, workshops, and personal interactions, I love to share insights on merging technology with artistic visions, helping others tap into their creative potential
+                </div>
+
+                <div class="service-item">
+                    Personalized Artwork Commissions: If you're seeking a unique expression, I offer custom artwork commissions tailored to your specific vision
+                </div>
+
+                <div class="service-item">
+                    Building a Creative Community: In the future, I dream of establishing a platform where diverse creative minds can come together, spark synergy, and collectively "bloom"
+                </div>
+            </div>
+        </section>
+
+        <!-- Future Aspirations -->
+        <section class="section">
+            <h2 class="section-title">Future Aspirations</h2>
+            <div class="section-content">
+                <div class="vision-intro">
+                    My vision for the future is extremely ambitious, filled with endless possibilities and multidimensionality:
+                </div>
+
+                <div class="vision-item">
+                    I can be a creator of immersive experience spaces, striving to create a space that expresses my aesthetic and brings dreamy, romantic, and unique emotional experiences to the audience through sound and light—igniting people's passion for life and revealing beauty in the process.
+                </div>
+
+                <div class="vision-item">
+                    I can be a scientist who seamlessly integrates artistic intuition with scientific inquiry, committed to fostering the convergence of technology and the humanities.
+                </div>
+
+                <div class="vision-item">
+                    I can be a designer with my own fashion brand, blending unique aesthetics with cutting-edge technology to lead fashion trends.
+                </div>
+
+                <div class="vision-item">
+                    I can be a sensitive entrepreneur, adept at identifying subtle needs and developing unique and customized applications.
+                </div>
+
+                <div class="vision-intro">
+                    I firmly believe that I am a multifaceted individual, not confined to a single career—every role is merely one projection of my complex and diverse self.
+                </div>
+            </div>
+        </section>
+
+        <a href="main.html" class="back-link">← Back to Gallery</a>
+    </div>
+    <script>
+        // 音乐播放器功能
+        document.querySelectorAll('.music-card').forEach(card => {
+            const audio = card.querySelector('audio');
+            const playBtn = card.querySelector('.play-btn');
+            const progress = card.querySelector('.progress');
+            const progressBar = card.querySelector('.progress-bar');
+            const currentTime = card.querySelector('.current-time');
+            const duration = card.querySelector('.duration');
+
+            // 播放/暂停控制
+            playBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    audio.play();
+                    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                } else {
+                    audio.pause();
+                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            });
+
+            // 更新进度条
+            audio.addEventListener('timeupdate', () => {
+                const progressPercent = (audio.currentTime / audio.duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+                
+                const minutes = Math.floor(audio.currentTime / 60);
+                const seconds = Math.floor(audio.currentTime % 60);
+                currentTime.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            });
+
+            // 点击进度条跳转
+            progressBar.addEventListener('click', (e) => {
+                const width = progressBar.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+                audio.currentTime = (clickX / width) * duration;
+            });
+
+            // 加载完成后显示总时长
+            audio.addEventListener('loadedmetadata', () => {
+                const minutes = Math.floor(audio.duration / 60);
+                const seconds = Math.floor(audio.duration % 60);
+                duration.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            });
+        });
+    </script>
+</body>
+</html> 

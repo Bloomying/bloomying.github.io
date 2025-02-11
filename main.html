@@ -1,0 +1,2156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloomying Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --content-padding: 3rem;
+            --accent-color: #E8DFD8;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans SC', sans-serif;
+            background: #fff;
+            display: flex;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* 优化侧边栏 */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(10px);
+            padding: 3rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 0 3rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .sidebar-header h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            letter-spacing: 0.08em;
+            color: #000;
+        }
+
+        .sidebar-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 3rem;
+            right: 3rem;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #000, transparent);
+            opacity: 0.2;
+        }
+
+        /* 导航分类标题 */
+        .nav-category {
+            padding: 0 2rem;
+            margin: 2rem 0 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            color: rgba(0,0,0,0.7);
+            position: relative;
+        }
+
+        .nav-category a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-category a:hover {
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* 导航菜单分组 */
+        .nav-group {
+            margin-bottom: 2rem;
+            padding: 0 1.5rem;
+        }
+
+        /* 子菜单样式 */
+        .nav-submenu {
+            margin-left: 1rem;
+            height: 0;
+            overflow: hidden;
+            transition: height 0.3s ease;
+        }
+
+        .nav-submenu.active {
+            height: auto;
+        }
+
+        /* 导航项样式 */
+        .nav-item {
+            padding: 0.4rem 0.8rem;
+            margin: 0.3rem 0;
+            font-size: 0.85rem;
+            color: rgba(0,0,0,0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.5);
+            color: rgba(0,0,0,0.8);
+        }
+
+        .nav-item.active {
+            color: rgba(0,0,0,0.9);
+            font-weight: 500;
+        }
+
+        /* 子菜单过渡效果 */
+        .nav-submenu .nav-item {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+        }
+
+        /* 标签样式 */
+        .work-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+            color: rgba(0,0,0,0.6);
+        }
+
+        .tag.theme {
+            background: rgba(183, 108, 253, 0.1);
+            color: #B76CFD;
+        }
+
+        .tag.medium {
+            background: rgba(6, 182, 212, 0.1);
+            color: #06B6D4;
+        }
+
+        /* 添加装饰元素 */
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 1px;
+            height: 3rem;
+            background: linear-gradient(to bottom, #000, transparent);
+            opacity: 0.2;
+        }
+
+        .sidebar::after {
+            content: '';
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            width: 3rem;
+            height: 1px;
+            background: linear-gradient(to right, #000, transparent);
+            opacity: 0.2;
+        }
+
+        /* 主内容区样式 */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: var(--content-padding);
+            background: #fff;
+        }
+
+        /* 作品展示区域样式 */
+        .works-grid {
+            padding: 1.5em;
+            max-width: 1400px;
+            margin: 0 auto;
+            columns: 3;
+            column-gap: 15px;
+        }
+
+        /* 作品卡片样式 */
+        .work-media {
+            display: inline-block;
+            vertical-align: top;
+            margin-bottom: 15px;
+            overflow: hidden;
+            width: 100%;
+            break-inside: avoid;
+        }
+
+        /* 图片样式 */
+        .work-media img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
+        }
+
+        /* 占据整行的图片样式 */
+        .work-media.full-width {
+            display: block;
+            -webkit-column-span: all;
+            column-span: all;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        /* 海洋照片占据整行 */
+        .work-media.ocean-full {
+            grid-column: 1 / -1;  /* 从第一列到最后一列 */
+            width: 100%;
+        }
+
+        /* 海洋照片排成一列 */
+        .work-media.ocean-series {
+            grid-column: 3;  /* 固定在第三列 */
+        }
+
+        /* 悬浮效果 */
+        .work-media {
+            filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, .3));
+            transition: filter .25s ease-in-out;
+        }
+
+        .work-media:hover {
+            filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, .3));
+        }
+
+        /* 文字样式 */
+        .work-caption h3 {
+            font-size: 0.9rem;
+            font-weight: 400;
+            margin-bottom: 0.4rem;
+            color: rgba(0, 0, 0, 0.75);
+            letter-spacing: 0.02em;
+        }
+
+        .work-caption p {
+            font-size: 0.8rem;
+            color: rgba(0, 0, 0, 0.5);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* 阴影和悬浮效果 */
+        .work-media:hover {
+            filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, .3));
+        }
+
+        /* 响应式布局 */
+        @media only screen and (max-width: 1023px) and (min-width: 768px) {
+            .works-grid {
+                columns: 2;
+                column-gap: 15px;
+            }
+        }
+
+        @media only screen and (max-width: 767px) {
+            .works-grid {
+                columns: 1;
+            }
+            
+            .work-media {
+                margin-bottom: 15px;
+            }
+        }
+
+        /* 修改featured类样式，让两张图片并排显示 */
+        .work-media.featured {
+            column-span: all;
+            margin-bottom: 1rem;  /* 增加主图下方间距 */
+        }
+
+        /* 创建一个容器来包含两张featured图片 */
+        .featured-row {
+            column-span: all;   /* 让容器占据整行 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 添加流体背景 */
+        .fluid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-color) 100%);
+            opacity: 0.8;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .fluid-background::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgogIDxmaWx0ZXIgaWQ9Im5vaXNlIj4KICAgIDxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjAyIiBudW1PY3RhdmVzPSI1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+CiAgPC9maWx0ZXI+CiAgPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI25vaXNlKSIgb3BhY2l0eT0iMC4wNSIvPgo8L3N2Zz4=');
+            animation: fluid 15s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes fluid {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-20%, -20%) rotate(360deg); }
+        }
+
+        /* 修改主内容区为滚动式布局 */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 0;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            background: transparent;
+        }
+
+        /* 每个部分占满屏幕 */
+        .section {
+            min-height: 100vh;
+            padding: 1.5rem var(--content-padding);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.2rem;
+            font-weight: 300;
+            color: #000;
+            margin: 3rem 0;
+            text-align: center;
+            letter-spacing: 0.15em;
+        }
+
+        .section.active .section-title {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 导航样式更新 */
+        .nav-menu {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-dot::before {
+            content: attr(data-title);
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            background: rgba(255,255,255,0.9);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot:hover::before {
+            opacity: 1;
+            right: 25px;
+        }
+
+        .nav-dot.active {
+            background: #333;
+            transform: scale(1.2);
+        }
+
+        /* 每个部分的渐变背景 */
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        /* 主题部分的渐变 */
+        #blooming-pride::before {
+            background: linear-gradient(
+                to bottom,
+                #FF61D2 0%,     /* 亮粉色开始 */
+                #FE85F3 40%,    /* 梦幻粉 */
+                #B76CFD 100%    /* 亮紫色结束 */
+            );
+        }
+
+        #vigor-heartbeat::before {
+            background: linear-gradient(
+                to bottom,
+                #B76CFD 0%,     /* 承接上一个的亮紫色 */
+                #7C3AED 40%,    /* 深紫色 */
+                #4F46E5 100%    /* 靛蓝色结束 */
+            );
+        }
+
+        #fantasy-dreamland::before {
+            background: linear-gradient(
+                to bottom,
+                #4F46E5 0%,     /* 承接上一个的靛蓝色 */
+                #06B6D4 40%,    /* 青色 */
+                #10B981 100%    /* 翠绿色结束 */
+            );
+        }
+
+        /* 媒介部分的渐变 */
+        #photography::before {
+            background: linear-gradient(
+                to bottom,
+                #10B981 0%,     /* 承接上一个的翠绿色 */
+                #0EA5E9 40%,    /* 天蓝色 */
+                #38BDF8 100%    /* 浅蓝色结束 */
+            );
+        }
+
+        #illustration::before {
+            background: linear-gradient(
+                to bottom,
+                #38BDF8 0%,     /* 承接上一个的浅蓝色 */
+                #818CF8 40%,    /* 靛紫色 */
+                #A78BFA 100%    /* 淡紫色结束 */
+            );
+        }
+
+        #craft::before {
+            background: linear-gradient(
+                to bottom,
+                #A78BFA 0%,     /* 承接上一个的淡紫色 */
+                #C084FC 40%,    /* 亮紫色 */
+                #E879F9 100%    /* 粉紫色结束 */
+            );
+        }
+
+        #generative::before {
+            background: linear-gradient(
+                to bottom,
+                #E879F9 0%,     /* 承接上一个的粉紫色 */
+                #F472B6 40%,    /* 粉红色 */
+                #FB7185 100%    /* 珊瑚红结束 */
+            );
+        }
+
+        #ai::before {
+            background: linear-gradient(
+                to bottom,
+                #FB7185 0%,     /* 承接上一个的珊瑚红 */
+                #FBBF24 40%,    /* 金色 */
+                #FCD34D 100%    /* 浅金色结束 */
+            );
+        }
+
+        #ai-film::before {
+            background: linear-gradient(
+                to bottom,
+                #FB7185 0%,     /* 承接上一个的珊瑚红 */
+                #FBBF24 40%,    /* 金色 */
+                #FCD34D 100%    /* 浅金色结束 */
+            );
+        }
+
+        #ai-craft::before {
+            background: linear-gradient(
+                to bottom,
+                #FCD34D 0%,     /* 承接上一个的浅金色 */
+                #34D399 40%,    /* 翡翠绿 */
+                #2DD4BF 100%    /* 青绿色结束 */
+            );
+        }
+
+        #blog-podcast::before {
+            background: linear-gradient(
+                to bottom,
+                #FCD34D 0%,     /* 承接上一个的浅金色 */
+                #34D399 40%,    /* 翡翠绿 */
+                #2DD4BF 100%    /* 青绿色结束 */
+            );
+        }
+
+        #music::before {
+            background: linear-gradient(
+                to bottom,
+                #2DD4BF 0%,     /* 承接上一个的青绿色 */
+                #0EA5E9 40%,    /* 天蓝色 */
+                #6366F1 100%    /* 靛蓝色结束 */
+            );
+        }
+
+        /* 添加闪光效果 */
+        .section::after {
+            content: '';
+            position: absolute;
+            top: -150%;
+            left: -50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(
+                circle,
+                rgba(255,255,255,0.2) 0%,
+                transparent 40%
+            );
+            animation: shine 15s infinite linear;
+            z-index: 0;
+            mix-blend-mode: soft-light;
+        }
+
+        @keyframes shine {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 确保内容在渐变和闪耀效果之上 */
+        .section > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 调整文字颜色 */
+        .section-title,
+        h3,
+        .year {
+            color: rgba(255,255,255,0.95);
+        }
+
+        i,
+        p {
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* 标题出现动画 */
+        .main-title, .medium-title {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: titleFadeIn 0.8s ease forwards;
+        }
+
+        @keyframes titleFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 更新分组标题样式 */
+        .medium-group-title {
+            font-size: 1.8rem;
+            font-weight: 200;
+            color: rgba(255,255,255,0.95);
+            margin: 1rem 0 1rem;
+            padding-left: 3rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* 更新分类标题样式 */
+        .category-title {
+            font-size: 2.2rem;
+            font-weight: 200;
+            color: rgba(255,255,255,0.95);
+            margin: 1rem 0 1rem;
+            padding-left: 3rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* 添加不同的宽高比例类 */
+        .work-media.square {
+            width: 100%;
+            padding-bottom: 100%;
+        }
+
+        .work-media.portrait {
+            width: 100%;
+            padding-bottom: 133.33%;
+        }
+
+        .work-media.landscape {
+            width: 100%;
+            padding-bottom: 56.25%;
+        }
+
+        /* Vigor & Heartbeat 部分的特殊样式 */
+        #vigor-heartbeat .works-grid {
+            columns: 3;
+            column-gap: 15px;
+            padding: 1.5em;
+        }
+
+        /* 视频容器样式 */
+        .work-media.video {
+            position: relative;
+            padding-top: 0;  /* 移除固定比例 */
+            height: auto;
+        }
+
+        .work-media.video video {
+            position: relative;  /* 改为相对定位 */
+            top: auto;
+            left: auto;
+            width: 100%;
+            height: auto;
+            object-fit: contain;  /* 保持原始比例 */
+            border-radius: 4px;
+        }
+
+        /* 响应式调整 */
+        @media only screen and (max-width: 1023px) {
+            #vigor-heartbeat .works-grid {
+                columns: 2;
+                column-gap: 15px;
+            }
+        }
+
+        @media only screen and (max-width: 767px) {
+            #vigor-heartbeat .works-grid {
+                columns: 1;
+            }
+        }
+
+        /* Rolling 图片的旋转交互效果 */
+        .work-media.rolling {
+            perspective: 1000px;
+        }
+
+        .work-media.rolling img {
+            transition: transform 0.3s ease-out;
+            transform-origin: center center;
+            cursor: pointer;
+            backface-visibility: visible;  /* 保持背面可见 */
+        }
+
+        .work-media.rolling img.rotating {
+            animation: rolling 8s linear infinite;
+        }
+
+        @keyframes rolling {
+            from {
+                transform: rotate3d(0, 0, 1, 0deg);  /* 使用3D旋转 */
+            }
+            to {
+                transform: rotate3d(0, 0, 1, 360deg);
+            }
+        }
+
+        /* 确保图片在旋转时保持原始形状 */
+        .work-media.rolling {
+            overflow: visible !important;  /* 覆盖之前的overflow: hidden */
+        }
+
+        .work-media.rolling img {
+            transform-style: flat;  /* 使用平面变换 */
+            will-change: transform;  /* 优化性能 */
+        }
+
+        /* 确保海洋照片在同一列 */
+        .work-media.featured + .work-media {
+            break-before: column;  /* 从新列开始 */
+        }
+
+        /* Photography 部分的特殊样式 */
+        #photography .masonry-wrapper {
+            padding: 1.5em;
+            max-width: 1400px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        #photography .masonry {
+            columns: 3;
+            column-gap: 5px;
+        }
+
+        #photography .masonry-item {
+            display: inline-block;
+            vertical-align: top;
+            margin-bottom: 5px;
+            filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, .3));
+            transition: filter .25s ease-in-out;
+        }
+
+        #photography .masonry-item:hover {
+            filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, .3));
+        }
+
+        #photography .masonry-content {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
+        }
+
+        /* Photography 部分的特殊样式 */
+        #photography .work-media.full-width {
+            display: block;
+            -webkit-column-span: all;
+            column-span: all;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        #photography .work-media {
+            display: inline-block;
+            vertical-align: top;
+            margin-bottom: 5px;
+            filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, .3));
+            transition: filter .25s ease-in-out;
+        }
+
+        .photo-grid {
+            columns: 3;
+            column-gap: 15px;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5em;
+        }
+
+        .photo-grid img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .photo-grid .full-width {
+            width: 100%;
+            column-span: all;
+            margin-bottom: 20px;
+        }
+
+        /* 确保图片容器正确处理间距 */
+        .photography-section {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        /* 添加响应式布局 */
+        @media only screen and (max-width: 1023px) and (min-width: 768px) {
+            .photo-grid {
+                columns: 2;
+                column-gap: 10px;
+            }
+        }
+
+        @media only screen and (max-width: 767px) {
+            .photo-grid {
+                columns: 1;
+            }
+        }
+
+        /* Craft 部分的特殊样式 */
+        #craft .works-grid {
+            columns: 3;
+            column-gap: 15px;
+            padding: 1.5em;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        #craft .work-media {
+            margin-bottom: 15px;
+            break-inside: avoid;
+            position: relative;
+        }
+
+        #craft .work-media img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
+        }
+
+        #craft .work-media.video {
+            margin-bottom: 15px;
+        }
+
+        #craft .work-media.video video {
+            width: 100%;
+            border-radius: 4px;
+            display: block;
+        }
+
+        #craft .work-media.full-width {
+            column-span: all;
+        }
+
+        /* 响应式布局 */
+        @media only screen and (max-width: 1023px) and (min-width: 768px) {
+            #craft .works-grid {
+                columns: 2;
+            }
+        }
+
+        @media only screen and (max-width: 767px) {
+            #craft .works-grid {
+                columns: 1;
+            }
+        }
+
+        #craft .work-media.video {
+            margin-bottom: 15px; /* 与图片保持一致的间距 */
+        }
+
+        #craft .work-media.video video {
+            width: 100%;
+            border-radius: 4px; /* 与图片保持一致的圆角 */
+            display: block;
+        }
+
+        /* 音乐播放器网格布局 */
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* 音乐卡片样式 */
+        .music-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+            min-width: 300px;
+        }
+
+        .music-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* 封面图样式 */
+        .music-cover {
+            position: relative;
+            width: 100%;
+            padding-bottom: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .music-cover img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 播放按钮样式 */
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .music-cover:hover .play-btn {
+            opacity: 1;
+        }
+
+        /* 音乐信息样式 */
+        .music-info {
+            padding: 1rem 0;
+        }
+
+        .song-title {
+            font-size: 1.2rem;
+            margin: 0;
+            color: #fff;
+        }
+
+        .artist {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0.5rem 0;
+        }
+
+        /* 进度条样式 */
+        .progress-container {
+            padding: 0.5rem 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: #fff;
+            border-radius: 2px;
+            transition: width 0.1s linear;
+            position: relative;
+        }
+
+        /* 进度条拖动手柄 */
+        .progress::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .progress-bar:hover .progress::after {
+            opacity: 1;
+        }
+
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.5rem;
+        }
+
+        /* 响应式布局 */
+        @media (max-width: 1024px) {
+            .music-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .music-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+
+        /* 歌词按钮样式 */
+        .lyrics-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            padding: 0.5rem 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* 歌词面板样式 */
+        .lyrics-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+        
+        .lyrics-panel.active {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .lyrics-content {
+            padding: 1rem;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            white-space: pre-line;
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.05em;
+        }
+
+        /* 美化歌词滚动条 */
+        .lyrics-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .lyrics-panel::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        
+        .lyrics-panel::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+        
+        .lyrics-panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Vigor & Heartbeat 作品标题样式 */
+        .vigor-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 0.08em;
+            margin-top: 0.8rem;
+            margin-bottom: 15px;
+            text-align: center;
+            color: rgba(0, 0, 0, 0.85);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .vigor-title a {
+            color: inherit;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 3px;
+        }
+
+        .vigor-title a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: currentColor;
+            transition: width 0.3s ease;
+        }
+
+        .vigor-title a:hover {
+            color: rgba(0, 0, 0, 1);
+        }
+
+        .vigor-title a:hover::after {
+            width: 100%;
+        }
+
+        /* 确保所有图片和视频都有相同的圆角 */
+        .work-media.full-width img,
+        .masonry-content,
+        #photography .work-media img,
+        .photo-grid img,
+        .work-media.video video {
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 流体背景 -->
+    <div class="fluid-background"></div>
+
+    <!-- 侧边栏 -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1>Bloomying</h1>
+        </div>
+        
+        <!-- About -->
+        <div class="nav-group">
+            <div class="nav-category">
+                <a href="about.html" class="nav-link">About</a>
+            </div>
+        </div>
+        
+        <div class="decorative-line"></div>
+
+        <!-- By Theme -->
+        <div class="nav-group">
+            <div class="nav-category">By Theme</div>
+            <div class="nav-item" data-theme="blooming">
+                Blooming with Pride
+            </div>
+            <div class="nav-item" data-theme="vigor">
+                My Vigor. My Heartbeat.
+            </div>
+            <div class="nav-item" data-theme="fantasy">
+                My Fantasy. My Dreamland.
+            </div>
+        </div>
+
+        <!-- 媒介分类 -->
+        <div class="nav-group">
+            <div class="nav-category">By Medium</div>
+            <div class="nav-item" data-medium="visual">
+                Visual Arts & Crafts
+                <div class="nav-submenu">
+                    <div class="nav-item" data-section="photography">Photography</div>
+                    <div class="nav-item" data-section="illustration">Illustration</div>
+                    <div class="nav-item" data-section="craft">Craft</div>
+                    <div class="nav-item" data-section="generative">Generative Art</div>
+                    <div class="nav-item" data-section="ai">AI</div>
+                </div>
+            </div>
+            <div class="nav-item" data-medium="narrative">
+                Narrative & Music
+                <div class="nav-submenu">
+                    <div class="nav-item" data-section="blog-podcast">Blog & Podcast</div>
+                    <div class="nav-item" data-section="music">Music & Lyrics</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 主题部分 -->
+        <section id="blooming-pride" class="section" data-theme="blooming">
+            <h1 class="section-title">Blooming with Pride</h1>
+            <div class="works-grid">
+                <!-- 主图 -->
+                <div class="work-media featured">
+                    <img src="assets/blooming/4.png" alt="Blooming with Pride Logo">
+                </div>
+
+                <!-- 第一列 -->
+                <div class="work-media">
+                    <img src="assets/blooming/7.jpg" alt="Pink Chrysanthemum">
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/blooming/34.jpg" alt="Illustration 34">
+                </div>
+
+                <!-- 第二列 -->
+                <div class="work-media">
+                    <a href="butterfly.html">
+                        <img src="assets/blooming/5.jpg" alt="Abstract Floral">
+                    </a>
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/blooming/37.jpg" alt="Illustration 37">
+                </div>
+
+                <!-- 第三列 -->
+                <div class="work-media">
+                    <a href="begonia.html">
+                        <img src="assets/blooming/2.jpg" alt="Pink Flower Bud">
+                    </a>
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/blooming/57.jpg" alt="Illustration 57">
+                </div>
+
+                <!-- 底部一行 -->
+                <div class="work-media">
+                    <img src="assets/blooming/1.jpg" alt="Green Leaves Detail">
+                </div>
+
+                <div class="work-media">
+                    <a href="story.html">
+                        <img src="assets/blooming/3.jpg" alt="Floral Art">
+                    </a>
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/blooming/6.jpg" alt="Pink Flower Close-up">
+                </div>
+            </div>
+        </section>
+
+        <section id="vigor-heartbeat" class="section" data-theme="vigor">
+            <h1 class="section-title">My Vigor. My Heartbeat.</h1>
+            <div class="works-grid">
+                <!-- 第一行 -->
+                <div class="work-media">
+                    <img src="assets/vigor/waltz.jpg" alt="Waltz">
+                    <h3 class="vigor-title">Waltz</h3>
+                </div>
+
+                <div class="work-media video">
+                    <video src="assets/vigor/heartbeat.mp4" autoplay loop muted playsinline></video>
+                    <h3 class="vigor-title">Heartbeat 01</h3>
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/vigor/An_open_heart.jpg" alt="An Open Heart">
+                    <h3 class="vigor-title">A Broken Heart Is an Open Heart</h3>
+                </div>
+
+                <!-- 第二行 -->
+                <div class="work-media">
+                    <img src="assets/vigor/dance.jpg" alt="Dance">
+                    <h3 class="vigor-title">Dance! Dance!</h3>
+                </div>
+
+                <div class="work-media rolling">
+                    <img src="assets/vigor/rolling.jpg" alt="Rolling">
+                    <h3 class="vigor-title">Rolling On</h3>
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/vigor/illuminated.jpg" alt="Illuminated">
+                    <h3 class="vigor-title">Illuminated</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="fantasy-dreamland" class="section" data-theme="fantasy">
+            <h1 class="section-title">My Fantasy. My Dreamland.</h1>
+            <div class="works-grid">
+                <!-- 第一列：左上角wave -->
+                <div class="work-media">
+                    <img src="assets/fantasy/wave.jpg" alt="Wave">
+                </div>
+                
+                <!-- 第二列 -->
+                <div class="work-media">
+                    <img src="assets/fantasy/source.jpg" alt="Source">
+                </div>
+                
+                <!-- 第三列：右上角bubble -->
+                <div class="work-media">
+                    <img src="assets/fantasy/bubble.jpg" alt="Bubble">
+                </div>
+                
+                <!-- 第一列 -->
+                <div class="work-media">
+                    <img src="assets/fantasy/lake.jpg" alt="Lake">
+                </div>
+                
+                <!-- 第二列：中间mountain -->
+                <div class="work-media">
+                    <img src="assets/fantasy/mountain.jpg" alt="Mountain">
+                </div>
+                
+                <!-- 第三列 -->
+                <div class="work-media">
+                    <img src="assets/fantasy/ysj.jpg" alt="YSJ">
+                </div>
+
+                <!-- 第一列：左下角eyse -->
+                <div class="work-media">
+                    <img src="assets/fantasy/eyse.jpg" alt="Eyes">
+                </div>
+
+                <!-- 第二列 -->
+                <div class="work-media">
+                    <img src="assets/fantasy/blow.jpg" alt="Blow">
+                </div>
+            </div>
+        </section>
+
+        <section id="photography" class="section" data-section="photography">
+            <h1 class="section-title">Photography</h1>
+            <div class="photography-section">
+                <div class="photo-grid">
+                    <!-- 特殊处理的图片，跨越所有列，放在最上面 -->
+                    <img src="assets/Photography/6.jpg" alt="Photography 6" class="full-width">
+                    
+                    <!-- 第一列 -->
+                    <img src="assets/Photography/5.jpg" alt="Photography 5">
+                    <img src="assets/Photography/7.jpg" alt="Photography 7">
+                    <img src="assets/Photography/8.jpg" alt="Photography 8">
+                    <img src="assets/Photography/11 (3).jpg" alt="Photography 11-3">
+                    
+                    <!-- 第二列 -->
+                    <img src="assets/Photography/11 (4).jpg" alt="Photography 11-4">
+                    <img src="assets/Photography/9.jpg" alt="Photography 9">
+                    <img src="assets/Photography/10.jpg" alt="Photography 10">
+                    <img src="assets/Photography/4.jpg" alt="Photography 4">
+                    
+                    <!-- 第三列 -->
+                    <img src="assets/Photography/11 (1).jpg" alt="Photography 11-1">
+                    <img src="assets/Photography/2.jpg" alt="Photography 2">
+                    <img src="assets/Photography/3.jpg" alt="Photography 3">
+                    <img src="assets/Photography/1.jpg" alt="Photography 1">
+                    <img src="assets/Photography/11 (2).jpg" alt="Photography 11-2">
+                </div>
+            </div>
+        </section>
+
+        <section id="illustration" class="section" data-section="illustration">
+            <h1 class="section-title">Illustration</h1>
+            <div class="works-grid">
+                <!-- 大尺寸和视觉冲击力强的作品 -->
+                <div class="work-media">
+                    <img src="assets/illustration/4.png" alt="Illustration 4">
+                </div>
+                
+                <div class="work-media">
+                    <img src="assets/illustration/mountain.jpg" alt="Mountain">
+                </div>
+                
+                <div class="work-media">
+                    <img src="assets/illustration/2.jpg" alt="Illustration 2">
+                </div>
+
+                <!-- 中等尺寸的彩色作品 -->
+                <div class="work-media">
+                    <img src="assets/illustration/07.jpg" alt="Illustration 07">
+                </div>
+                
+                <div class="work-media">
+                    <img src="assets/illustration/lake.jpg" alt="Lake">
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/illustration/source.jpg" alt="Source">
+                </div>
+
+                <!-- 较小但细节丰富的作品 -->
+                <div class="work-media">
+                    <img src="assets/illustration/19.jpg" alt="Illustration 19">
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/illustration/blow.jpg" alt="Blow">
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/illustration/bubble.jpg" alt="Bubble">
+                </div>
+
+                <!-- 简洁的小尺寸作品 -->
+                <div class="work-media">
+                    <img src="assets/illustration/34.jpg" alt="Illustration 34">
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/illustration/37.jpg" alt="Illustration 37">
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/illustration/wave.jpg" alt="Wave">
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/illustration/46.jpg" alt="Illustration 46">
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/illustration/49.jpg" alt="Illustration 49">
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/illustration/57.jpg" alt="Illustration 57">
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/illustration/eyse.jpg" alt="Eyes">
+                </div>
+
+                <div class="work-media">
+                    <img src="assets/illustration/ysj.jpg" alt="YSJ">
+                </div>
+            </div>
+        </section>
+
+        <section id="craft" class="section" data-section="craft">
+            <h1 class="section-title">Craft</h1>
+            <div class="works-grid">
+                <!-- 第一列 -->
+                <div class="work-media video">
+                    <video src="assets/craft/craft_video_2.mp4" controls playsinline></video>
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_20.jpg" alt="Craft Work 20">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_22.jpg" alt="Craft Work 22">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_15.jpg" alt="Craft Work 15">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_5.jpg" alt="Craft Work 5">
+                </div>
+                <div class="work-media">
+                    <a href="butterfly.html">
+                        <img src="assets/craft/craft_18.jpg" alt="Butterfly Ring">
+                    </a>
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_7.jpg" alt="Craft Work 7">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_16.jpg" alt="Craft Work 16">
+                </div>
+
+                <!-- 第二列 -->
+                <div class="work-media">
+                    <img src="assets/craft/craft_23.jpg" alt="Craft Work 23">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_17.jpg" alt="Craft Work 17">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_2.jpg" alt="Craft Work 2">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_19.jpg" alt="Craft Work 19">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_6.jpg" alt="Craft Work 6">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_3.jpg" alt="Craft Work 3">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_14.jpg" alt="Craft Work 14">
+                </div>
+
+                <!-- 第三列 -->
+                <div class="work-media">
+                    <img src="assets/craft/craft_8.jpg" alt="Craft Work 8">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_9.jpg" alt="Craft Work 9">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_4.jpg" alt="Craft Work 4">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_21.jpg" alt="Craft Work 21">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_12.jpg" alt="Craft Work 12">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_11.jpg" alt="Craft Work 11">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_10.jpg" alt="Craft Work 10">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_1.jpg" alt="Craft Work 1">
+                </div>
+                <div class="work-media">
+                    <img src="assets/craft/craft_13.jpg" alt="Craft Work 13">
+                </div>
+                <div class="work-media video">
+                    <video src="assets/craft/craft_video_1.mp4" controls playsinline></video>
+                </div>
+            </div>
+        </section>
+
+        <section id="generative" class="section" data-section="generative">
+            <h2 class="section-title">Generative Art</h2>
+            <div class="works-grid">
+                <!-- 第一行：两个视频占满整行 -->
+                <div class="work-media video full-width" style="display: flex; gap: 2rem; justify-content: center; margin-bottom: 2rem;">
+                    <div style="flex: 1; max-width: 40%;">
+                        <video src="assets/generative/fountain.mp4" controls playsinline></video>
+                        <h3 class="vigor-title">Fountain</h3>
+                    </div>
+                    <div style="flex: 1; max-width: 40%;">
+                        <video src="assets/generative/city.mp4" controls playsinline></video>
+                        <h3 class="vigor-title">City</h3>
+                    </div>
+                </div>
+
+                <!-- 第二行：两个云图占满整行 -->
+                <div class="work-media full-width" style="display: flex; gap: 2rem; justify-content: center; margin-bottom: 2rem;">
+                    <div style="flex: 1; max-width: 40%;">
+                        <img src="assets/generative/cloud1.png" alt="Generative Cloud Art 1">
+                        <h3 class="vigor-title">Cloud 01</h3>
+                    </div>
+                    <div style="flex: 1; max-width: 40%;">
+                        <img src="assets/generative/cloud2.png" alt="Generative Cloud Art 2">
+                        <h3 class="vigor-title">Cloud 02</h3>
+                    </div>
+                </div>
+
+                <!-- 第三行开始：按颜色系列排序 -->
+                <!-- 开始图案 -->
+                <div class="work-media">
+                    <img src="assets/generative/afmhot-4096.jpg" alt="Generative Art - Afmhot">
+                    <h3 class="vigor-title">Pattern 01</h3>
+                </div>
+
+                <!-- 粉色系列 -->
+                <div class="work-media">
+                    <img src="assets/generative/pink-4096.jpg" alt="Generative Art - Pink">
+                    <h3 class="vigor-title">Pattern 04</h3>
+                </div>
+                <div class="work-media">
+                    <img src="assets/generative/RdPu-4096.jpg" alt="Generative Art - RdPu">
+                    <h3 class="vigor-title">Pattern 07</h3>
+                </div>
+                <div class="work-media">
+                    <img src="assets/generative/autumn-4096.jpg" alt="Generative Art - Autumn">
+                    <h3 class="vigor-title">Pattern 10</h3>
+                </div>
+                <div class="work-media">
+                    <img src="assets/generative/PiYG-4096.jpg" alt="Generative Art - PiYG">
+                    <h3 class="vigor-title">Pattern 13</h3>
+                </div>
+
+                <!-- 蓝色系列 -->
+                <div class="work-media">
+                    <img src="assets/generative/PuBu-4096.jpg" alt="Generative Art - PuBu">
+                    <h3 class="vigor-title">Pattern 16</h3>
+                </div>
+                <div class="work-media">
+                    <img src="assets/generative/PuBuGn-4096.jpg" alt="Generative Art - PuBuGn">
+                    <h3 class="vigor-title">Pattern 02</h3>
+                </div>
+                <div class="work-media">
+                    <img src="assets/generative/BuGn-4096.jpg" alt="Generative Art - BuGn">
+                    <h3 class="vigor-title">Pattern 05</h3>
+                </div>
+
+                <!-- 紫色系列 -->
+                <div class="work-media">
+                    <img src="assets/generative/Purples-4096.jpg" alt="Generative Art - Purples">
+                    <h3 class="vigor-title">Pattern 08</h3>
+                </div>
+                <div class="work-media">
+                    <img src="assets/generative/RdGy-4096.jpg" alt="Generative Art - RdGy">
+                    <h3 class="vigor-title">Pattern 11</h3>
+                </div>
+
+                <!-- 红色系列 -->
+                <div class="work-media">
+                    <img src="assets/generative/Reds-4096.jpg" alt="Generative Art - Reds">
+                    <h3 class="vigor-title">Pattern 14</h3>
+                </div>
+                <div class="work-media">
+                    <img src="assets/generative/YlOrRd-4096.jpg" alt="Generative Art - YlOrRd">
+                    <h3 class="vigor-title">Pattern 17</h3>
+                </div>
+
+                <!-- 其他色系 -->
+                <div class="work-media">
+                    <img src="assets/generative/bwr-4096.jpg" alt="Generative Art - BWR">
+                    <h3 class="vigor-title">Pattern 03</h3>
+                </div>
+                <div class="work-media">
+                    <img src="assets/generative/cividis-4096.jpg" alt="Generative Art - Cividis">
+                    <h3 class="vigor-title">Pattern 06</h3>
+                </div>
+                <div class="work-media">
+                    <img src="assets/generative/Greys-4096.jpg" alt="Generative Art - Greys">
+                    <h3 class="vigor-title">Pattern 09</h3>
+                </div>
+                <div class="work-media">
+                    <img src="assets/generative/summer-4096.jpg" alt="Generative Art - Summer">
+                    <h3 class="vigor-title">Pattern 12</h3>
+                </div>
+                <div class="work-media">
+                    <img src="assets/generative/peaceful-gray1.png" alt="Peaceful Gray Pattern">
+                    <h3 class="vigor-title">Pattern 15</h3>
+                </div>
+                <div class="work-media">
+                    <img src="assets/generative/viridis-40961.png" alt="Viridis Pattern">
+                    <h3 class="vigor-title">Pattern 18</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="ai" class="section" data-section="ai">
+            <h2 class="section-title">AI</h2>
+            <div class="works-grid">
+                <!-- Landing Video (占据整行) -->
+                <div class="work-media video full-width">
+                    <video src="assets/ai/landing-video.mp4" controls playsinline></video>
+                    <h3 class="vigor-title" style="text-align: center;">太阳的涟漪 | Ripples of the Sun</h3>
+                </div>
+
+                <!-- 第一列 -->
+                <div class="work-media video">
+                    <video src="assets/AI exploration/AI heartbeat.mp4" controls playsinline></video>
+                </div>
+                <div class="work-media">
+                    <img src="assets/AI exploration/1.png" alt="AI Exploration 1">
+                </div>
+                <div class="work-media video">
+                    <video src="assets/AI exploration/jellyfish.mp4" controls playsinline></video>
+                </div>
+                <div class="work-media">
+                    <img src="assets/AI exploration/origami.jpg" alt="AI Origami">
+                </div>
+
+                <!-- 第二列 -->
+                <div class="work-media video">
+                    <video src="assets/AI exploration/nature fashion.mp4" controls playsinline></video>
+                </div>
+                <div class="work-media video">
+                    <video src="assets/AI exploration/grass.mp4" controls playsinline></video>
+                </div>
+                <div class="work-media video">
+                    <video src="assets/AI exploration/kaleidoscope.mp4" controls playsinline></video>
+                </div>
+                <div class="work-media">
+                    <img src="assets/AI exploration/glance.jpg" alt="AI Glance">
+                </div>
+
+                <!-- 第三列 -->
+                <div class="work-media">
+                    <img src="assets/ai/a5.png" alt="AI Exploration 5">
+                </div>
+                <div class="work-media video">
+                    <video src="assets/AI exploration/embro.mp4" controls playsinline></video>
+                </div>
+                <div class="work-media">
+                    <img src="assets/AI exploration/universe.png" alt="AI Universe">
+                </div>
+                <div class="work-media video">
+                    <video src="assets/AI exploration/water.mp4" controls playsinline></video>
+                </div>
+                <div class="work-media video">
+                    <video src="assets/AI exploration/kiss.mp4" controls playsinline></video>
+                </div>
+
+                <!-- 新添加的图片 -->
+                <div class="work-media">
+                    <img src="assets/ai/a1.png" alt="AI Exploration 1">
+                </div>
+                <div class="work-media">
+                    <img src="assets/ai/a2.png" alt="AI Exploration 2">
+                </div>
+                <div class="work-media">
+                    <img src="assets/ai/a3.png" alt="AI Exploration 3">
+                </div>
+                <div class="work-media">
+                    <img src="assets/ai/a4.png" alt="AI Exploration 4">
+                </div>
+                <div class="work-media">
+                    <img src="assets/AI exploration/2.png" alt="AI Exploration 2">
+                </div>
+                <div class="work-media">
+                    <img src="assets/ai/a6.png" alt="AI Exploration 6">
+                </div>
+                <div class="work-media">
+                    <img src="assets/ai/a7.png" alt="AI Exploration 7">
+                </div>
+                <div class="work-media">
+                    <img src="assets/ai/a8.png" alt="AI Exploration 8">
+                </div>
+                <div class="work-media">
+                    <img src="assets/ai/a9 (1).png" alt="AI Exploration 9-1">
+                </div>
+                <div class="work-media">
+                    <img src="assets/ai/a9 (2).png" alt="AI Exploration 9-2">
+                </div>
+                <div class="work-media">
+                    <img src="assets/ai/a9 (3).png" alt="AI Exploration 9-3">
+                </div>
+                <div class="work-media">
+                    <img src="assets/ai/a9 (4).png" alt="AI Exploration 9-4">
+                </div>
+                <div class="work-media">
+                    <img src="assets/ai/a9 (5).png" alt="AI Exploration 9-5">
+                </div>
+                <div class="work-media">
+                    <img src="assets/ai/a9 (6).png" alt="AI Exploration 9-6">
+                </div>
+                <div class="work-media">
+                    <img src="assets/ai/a9 (8).png" alt="AI Exploration 9-8">
+                </div>
+            </div>
+        </section>
+
+        <section id="blog-podcast" class="section" data-section="blog-podcast">
+            <h1 class="section-title">Blog & Podcast</h1>
+            <div class="works-grid">
+                <!-- 视频内容 -->
+                <div class="work-media video">
+                    <a href="podcast.html">
+                        <video src="assets/blog/output_compressed.mp4" controls playsinline></video>
+                        <div class="work-caption">
+                            <h3>关于创造力与自我探索的思考</h3>
+                            <p>Reflections on Creativity and Self-Discovery</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="work-media">
+                    <a href="story.html">
+                        <img src="assets/blooming/3.jpg" alt="The Story of Orange Soda and Pink Flowers">
+                        <div class="work-caption">
+                            <h3>橘子汽水和粉色花花的故事</h3>
+                            <p>The Story of Orange Soda and Pink Flowers</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- 修改博客链接的英文标题 -->
+                <div class="work-media">
+                    <a href="begonia.html">
+                        <img src="assets/blooming/2.jpg" alt="Begonia Painting">
+                        <div class="work-caption">
+                            <h3>秋海棠——没骨画小试牛刀</h3>
+                            <p>Begonia in 'Boneless' Style - A Humble Attempt</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- 在 Blog & Podcast section 中添加 -->
+                <div class="work-media">
+                    <a href="butterfly.html">
+                        <img src="assets/craft/craft_18.jpg" alt="Butterfly Ring">
+                        <div class="work-caption">
+                            <h3>氤氲蝴蝶梦——原创戒指，作于夏天，献给夏天</h3>
+                            <p>Misty Butterfly Dreams</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="work-media">
+                    <a href="deep-work.html">
+                        <img src="assets/generative/cloud1.png" alt="Deep Work and Time Management">
+                        <div class="work-caption">
+                            <h3>深度工作 | 在尝试了各种时间管理APP后，我最终选择了...</h3>
+                            <p>Deep Work: What I Chose After Trying Various Time Management Apps</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="music" class="section" data-section="music">
+            <h2 class="section-title">Music & Lyrics</h2>
+            <div class="music-grid">
+                <!-- 音乐卡片 1 -->
+                <div class="music-card">
+                    <div class="music-cover">
+                        <img src="assets/music/covers/artist.jpg" alt="Artist">
+                        <button class="play-btn">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                    <div class="music-info">
+                        <h3 class="song-title">Artist</h3>
+                        <p class="artist">Bloomying</p>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress"></div>
+                        </div>
+                        <div class="time-info">
+                            <span class="current-time">0:00</span>
+                            <span class="duration">3:25</span>
+                        </div>
+                    </div>
+                    <button class="lyrics-btn">
+                        <i class="fas fa-align-left"></i>
+                        Lyrics
+                    </button>
+                    <div class="lyrics-panel">
+                        <div class="lyrics-content">
+                            Lyrics by Bloomying & Claude
+                            Music by Suno AI
+                            
+                            A heart that feels too deep to hide
+                            A spirit too wild to confine
+                            Paper cranes and childhood dreams
+                            Of colors flowing endlessly
+                            Every sketch beneath my bed
+                            Every song inside my head
+                            Wasn't just a passing phase
+                            But my soul trying to say
+                            
+                            Tried to fit into their world
+                            Oh, how many times I failed
+                            Till I learned this simple truth:
+                            Some hearts can't be contained
+                            
+                            Now I know with open eyes
+                            I was born with colors in my soul
+                            And melodies that had to flow
+                            Art's not what I chose to do
+                            It's the air I breathe, it's true
+                            Though I learned this truth so late
+                            Every detour had its place
+                            Now I understand at last
+                            Why my heart beats this way
+                            
+                            They say I feel too much, too deep
+                            But that's what makes my art sing
+                            Success they said would set me free
+                            But chains of gold still felt like chains
+                            The path they chose felt like a cage
+                            Though lined with golden praise
+                            But art kept calling through the years
+                            Like sunlight through the haze
+                            
+                            No more loving from afar
+                            Other artists' distant stars
+                            Time to turn that love within
+                            Let my own light begin
+                            Through the darkness and through the light
+                            I've got worlds left to create
+                            With melancholy and with joy
+                            This is who I'm meant to be
+                            An artist, finally me
+                            
+                            Every color, every line
+                            Tells the story that is mine
+                            Like a river finding sea
+                            I'm becoming who I'm meant to be
+                            Watch me paint across the sky
+                            With colors only I define
+                            This is where I'm meant to be
+                            An artist, wild and free
+                        </div>
+                    </div>
+                    <audio src="assets/music/tracks/artist.mp3" preload="metadata"></audio>
+                </div>
+
+                <!-- 音乐卡片 2 -->
+                <div class="music-card">
+                    <div class="music-cover">
+                        <img src="assets/music/covers/入侵.jpg" alt="让我入侵你的生命">
+                        <button class="play-btn">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                    <div class="music-info">
+                        <h3 class="song-title">让我入侵你的生命</h3>
+                        <p class="artist">Bloomying</p>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress"></div>
+                        </div>
+                        <div class="time-info">
+                            <span class="current-time">0:00</span>
+                            <span class="duration">4:15</span>
+                        </div>
+                    </div>
+                    <button class="lyrics-btn">
+                        <i class="fas fa-align-left"></i>
+                        Lyrics
+                    </button>
+                    <div class="lyrics-panel">
+                        <div class="lyrics-content">
+                            Lyrics by Bloomying
+                            Music by Doubao
+                            
+                            让我入侵你的生命
+                            让我占有你的时间
+
+                            让我见证你的绽放
+                            让我看见你的哀伤
+
+                            让我沉入你的海洋
+                            让我摇曳你的迷航
+
+                            让我沐浴你的晴朗
+                            让我徜徉你的梦想
+
+                            让我忘记所有夜晚
+                            让我铭刻你的光芒
+
+                            让我终结你的流浪
+                            让我成为你的希望
+
+                            让我沉入你的海洋
+                            让我摇曳你的迷航
+
+                            让我沐浴你的晴朗
+                            让我徜徉你的梦想
+
+                            让你终结我的流浪
+                            让你成为我的希望
+                        </div>
+                    </div>
+                    <audio src="assets/music/tracks/入侵.mp3" preload="metadata"></audio>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 处理主题导航点击
+        document.querySelectorAll('.nav-item[data-theme]').forEach(item => {
+            item.addEventListener('click', () => {
+                const theme = item.getAttribute('data-theme');
+                const section = document.querySelector(`section[data-theme="${theme}"]`);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                    // 更新活动状态
+                    document.querySelectorAll('.nav-item[data-theme]').forEach(navItem => {
+                        navItem.classList.toggle('active', navItem === item);
+                    });
+                }
+            });
+        });
+
+        // 处理媒介父菜单的展开/收起
+        document.querySelectorAll('.nav-item[data-medium]').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const submenu = item.querySelector('.nav-submenu');
+                if (submenu) {
+                    e.stopPropagation();
+                    const isActive = submenu.classList.contains('active');
+                    
+                    // 关闭其他子菜单
+                    document.querySelectorAll('.nav-submenu').forEach(menu => {
+                        if (menu !== submenu) {
+                            menu.style.height = '0px';
+                            menu.classList.remove('active');
+                        }
+                    });
+
+                    // 切换当前子菜单
+                    submenu.classList.toggle('active');
+                    submenu.style.height = isActive ? '0px' : `${submenu.scrollHeight}px`;
+                }
+            });
+        });
+
+        // 处理子菜单项点击
+        document.querySelectorAll('.nav-submenu .nav-item[data-section]').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const section = item.getAttribute('data-section');
+                const targetSection = document.querySelector(`section[data-section="${section}"]`);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // 更新活动状态
+                    document.querySelectorAll('.nav-submenu .nav-item').forEach(navItem => {
+                        navItem.classList.remove('active');
+                    });
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // 监听滚动更新活动状态
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY + window.innerHeight / 2;
+            
+            // 检查所有section并添加active类
+            document.querySelectorAll('.section').forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            });
+            
+            // 检查主题部分
+            document.querySelectorAll('section[data-theme]').forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
+                    const theme = section.getAttribute('data-theme');
+                    updateActiveNavItem(theme);
+                }
+            });
+            
+            // 检查媒介部分
+            document.querySelectorAll('section[data-section]').forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
+                    const sectionId = section.getAttribute('data-section');
+                    updateActiveSubNavItem(sectionId);
+                }
+            });
+        });
+
+        // 更新活动状态的辅助函数
+        function updateActiveNavItem(theme) {
+            document.querySelectorAll('.nav-item[data-theme]').forEach(item => {
+                item.classList.toggle('active', item.getAttribute('data-theme') === theme);
+            });
+        }
+
+        function updateActiveSubNavItem(sectionId) {
+            document.querySelectorAll('.nav-submenu .nav-item[data-section]').forEach(item => {
+                item.classList.toggle('active', item.getAttribute('data-section') === sectionId);
+            });
+        }
+
+        // Rolling图片交互
+        const rollingImg = document.querySelector('.work-media.rolling img');
+        
+        rollingImg.addEventListener('mouseenter', () => {
+            rollingImg.classList.add('rotating');
+        });
+        
+        rollingImg.addEventListener('mouseleave', () => {
+            rollingImg.classList.remove('rotating');
+        });
+
+        // 音乐播放器功能
+        document.querySelectorAll('.music-card').forEach(card => {
+            const audio = card.querySelector('audio');
+            const playBtn = card.querySelector('.play-btn');
+            const progress = card.querySelector('.progress');
+            const progressBar = card.querySelector('.progress-bar');
+            const currentTime = card.querySelector('.current-time');
+            const duration = card.querySelector('.duration');
+
+            // 播放/暂停控制
+            playBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    audio.play();
+                    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                } else {
+                    audio.pause();
+                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            });
+
+            // 更新进度条
+            audio.addEventListener('timeupdate', () => {
+                const progressPercent = (audio.currentTime / audio.duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+                
+                // 更新当前时间
+                const minutes = Math.floor(audio.currentTime / 60);
+                const seconds = Math.floor(audio.currentTime % 60);
+                currentTime.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            });
+
+            // 点击和拖动进度条
+            let isDragging = false;
+
+            progressBar.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                const width = progressBar.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+                audio.currentTime = (clickX / width) * duration;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    const rect = progressBar.getBoundingClientRect();
+                    const width = progressBar.clientWidth;
+                    const x = Math.max(0, Math.min(e.clientX - rect.left, width));
+                    const duration = audio.duration;
+                    audio.currentTime = (x / width) * duration;
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            // 触摸设备支持
+            progressBar.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                const rect = progressBar.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const width = progressBar.clientWidth;
+                const duration = audio.duration;
+                audio.currentTime = (x / width) * duration;
+            });
+
+            progressBar.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = progressBar.getBoundingClientRect();
+                const x = Math.max(0, Math.min(touch.clientX - rect.left, progressBar.clientWidth));
+                const width = progressBar.clientWidth;
+                const duration = audio.duration;
+                audio.currentTime = (x / width) * duration;
+            });
+
+            // 加载完成后显示总时长
+            audio.addEventListener('loadedmetadata', () => {
+                const minutes = Math.floor(audio.duration / 60);
+                const seconds = Math.floor(audio.duration % 60);
+                duration.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            });
+        });
+
+        // 歌词面板控制
+        document.querySelectorAll('.lyrics-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const panel = btn.nextElementSibling;
+                panel.classList.toggle('active');
+                
+                // 更新按钮图标
+                const icon = btn.querySelector('i');
+                if (panel.classList.contains('active')) {
+                    icon.className = 'fas fa-times';
+                } else {
+                    icon.className = 'fas fa-align-left';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
