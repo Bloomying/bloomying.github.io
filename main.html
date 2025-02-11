@@ -1114,6 +1114,30 @@
         .work-media.video video {
             border-radius: 4px;
         }
+
+        /* 在现有的 style 标签中添加 */
+        .work-media {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .work-media.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 添加加载动画 */
+        .loading-placeholder {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
     </style>
 </head>
 <body>
@@ -1180,7 +1204,7 @@
             <div class="works-grid">
                 <!-- 主图 -->
                 <div class="work-media featured">
-                    <img src="assets/blooming/4.png" alt="Blooming with Pride Logo">
+                    <img src="assets/blooming/4.png" alt="Blooming with Pride Logo" loading="lazy" decoding="async">
                 </div>
 
                 <!-- 第一列 -->
@@ -1730,7 +1754,12 @@
                 <!-- 视频内容 -->
                 <div class="work-media video">
                     <a href="podcast.html">
-                        <video src="assets/blog/output_compressed.mp4" controls playsinline></video>
+                        <video src="assets/blog/output_compressed.mp4" 
+                               controls 
+                               playsinline 
+                               loading="lazy"
+                               preload="none">
+                        </video>
                         <div class="work-caption">
                             <h3>关于创造力与自我探索的思考</h3>
                             <p>Reflections on Creativity and Self-Discovery</p>
@@ -1865,7 +1894,7 @@
                             An artist, wild and free
                         </div>
                     </div>
-                    <audio src="assets/music/tracks/artist.mp3" preload="metadata"></audio>
+                    <audio src="assets/music/tracks/artist.mp3" preload="none"></audio>
                 </div>
 
                 <!-- 音乐卡片 2 -->
@@ -2150,6 +2179,58 @@
                     icon.className = 'fas fa-align-left';
                 }
             });
+        });
+
+        // 在现有的 script 标签末尾添加
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.work-media').forEach(media => {
+                observer.observe(media);
+            });
+        });
+
+        // 在现有的 script 标签中添加
+        let currentSection = null;
+        
+        const loadSection = (sectionId) => {
+            if (currentSection === sectionId) return;
+            
+            currentSection = sectionId;
+            const section = document.getElementById(sectionId);
+            
+            // 只加载当前部分的图片和视频
+            section.querySelectorAll('img[data-src]').forEach(img => {
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+            });
+            
+            section.querySelectorAll('video[data-src]').forEach(video => {
+                video.src = video.dataset.src;
+                video.removeAttribute('data-src');
+            });
+        };
+
+        // 监听滚动以加载当前视图的内容
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadSection(entry.target.id);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            sectionObserver.observe(section);
         });
     </script>
 </body>
